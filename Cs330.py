@@ -53,42 +53,44 @@ def findMinIndex(array, n):
 
 
 def prims(Matrix):
-    global edges 
     edges = []
     length = len(Matrix[0])
-    global unexploredNodes 
     unexploredNodes = [x for x in range(length)]
-    global Sum 
     Sum = 0
     
     edges += [x for x in Matrix[:,0]]         #The first column
     del unexploredNodes[0]                    #removes Index 0
     Matrix[0,:] = [1.01]                      # Removes the First Row
-    global minIndexEdges 
     minIndexEdges = findMinIndex(edges, length)
     Sum += edges[minIndexEdges]
     edges[minIndexEdges] = 1.01
     
-    global colIndex 
     colIndex = minIndexEdges 
     
     while(len(unexploredNodes) != 0):
         edges += [x for x in Matrix[: , colIndex]]
         Matrix[colIndex, :] = [1.01]            #Syntax may need to change
         minIndexEdges = findMinIndex(edges, length)
-        print("Sum: ", Sum)
-        print("Min Edges: ", edges[minIndexEdges])
         Sum += edges[minIndexEdges]
         edges[minIndexEdges] = 1.01
         colIndex = minIndexEdges % length
         del unexploredNodes[0]
         
     return Sum
-                  
-        
-x = graphTypeTwo(4)
-print(x)      
-prims(x)
+
+n = [16, 32, 64, 128, 256, 512, 1024, 2048, 4096, 8192]
+            
+
+for i in n:
+    graphOneSum = 0
+    graphTwoSum = 0
+    for j in range(5):
+        x = graphTypeOne(i)
+        y = graphTypeTwo(i)
+        graphOneSum += prims(x)
+        graphTwoSum += prims(y)
+    print("Type One Avg for ", i, ": ", graphOneSum / 5)
+    print("Type Two Avg for ", i, ": ", graphTwoSum / 5)
     
      
         
